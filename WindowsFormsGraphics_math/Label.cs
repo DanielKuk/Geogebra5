@@ -18,6 +18,7 @@ namespace WindowsFormsGraphics_math
         public double width;
         //modification
         //test2
+        //test3
 
         public Label(bool visible = true)
         {                     
