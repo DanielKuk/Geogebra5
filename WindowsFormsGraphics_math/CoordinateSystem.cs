@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 
-namespace WindowsFormsGraphics_math
+namespace Geogebra3
 {
     class CoordinateSystem
     {
@@ -101,8 +101,8 @@ namespace WindowsFormsGraphics_math
 //             g.DrawLine(pen, new Point(1, 100), new Point(200, 200));
 
             int counter = 0;
-            g.DrawLine(pen, new Point(0, h / 2), new Point(w, h / 2));
-            g.DrawLine(pen, new Point(w / 2, 0), new Point(w / 2, h));
+            g.DrawLine(pen, new Point(0, y0), new Point(w, y0));
+            g.DrawLine(pen, new Point(x0, 0), new Point(x0, h));
 
             for (int i = x0; i < w; i += unitInterval)
             {

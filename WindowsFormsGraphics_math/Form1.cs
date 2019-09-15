@@ -7,17 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 // comment
-//test comment2
+//modification
+// modification2
 
-namespace WindowsFormsGraphics_math
+namespace Geogebra3
 {
     public partial class Form1 : Form
     {
         delegate void Action(object sender, MouseEventArgs e);
-        int actionNumber = 0;
+        string actionKey = "AddPointButton";     
+        Dictionary<string, Action> actions = new Dictionary<string, Action>(8);
+        Dictionary<string, ToolStripItem> menuitems = new Dictionary<string, ToolStripItem>(8);
 
-        private CoordinateSystem cs1;
-        Action[] actions;
+        private CoordinateSystem cs1;      
         RealPoint firstPoint;
         RealPoint secondPoint;
         bool creatingLine;      
@@ -29,16 +31,18 @@ namespace WindowsFormsGraphics_math
         Label selectedLabel;
         RealSegment selectedSeg1 = null;
         RealSegment selectedSeg2 = null;
-        //List<Label> labelList;
+        bool csMove = false;
+        Point clickPointPixel = new Point(0, 0);
 
         public Form1()
         {
             InitializeComponent();
-
             // create Coordinate System
             int unitInterval = 30;
-            int x0 = pictureBox1.Width / 2;
-            int y0 = pictureBox1.Height / 2;
+            //int x0 = pictureBox1.Width / 2;
+            //int y0 = pictureBox1.Height / 2;
+            int x0 = 100;
+            int y0 = 200;
             int w = pictureBox1.Width;
             int h = pictureBox1.Height;           
             cs1 = new CoordinateSystem(unitInterval, x0, y0, w,h);           
@@ -48,21 +52,30 @@ namespace WindowsFormsGraphics_math
             realFigureList = new List<RealFigure>();          
             selectedPoint = null;
             selectedLabel = null;
-            actions = new Action[8];
-          
         }
 
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            actions[0] = AddPointAction;
-            actions[1] = AddLineAction;
-            actions[2] = AddRightTriangeAction;
-            actions[3] = AddRectangeAction;
-            actions[4] = AddIntersectAction;
-            actions[5] = AddIsoscelesAction;
-            actions[6] = AddCircleAction;
-            actions[7] = AddPolygonAction;
+            actions["AddPointButton"] = AddPointAction;
+            actions["AddLineButton"] = AddLineAction;
+            actions["RightTriangleButton"] = AddRightTriangeAction;
+            actions["AddRectangleButton"] = AddRectangeAction;
+            actions["IntersectButton"] = AddIntersectAction;
+            actions["IsoscelesTriangleButton"] = AddIsoscelesAction;
+            actions["AddCircleButton"] = AddCircleAction;
+            actions["AddPolygonButton"] = AddPolygonAction;
+
+            menuitems["AddPointButton"] = AddPointButton;
+            menuitems["AddLineButton"] = AddLineButton;
+            menuitems["AddRectangleButton"] = AddRectangleButton;
+            menuitems["AddCircleButton"] = AddCircleButton;
+            menuitems["RightTriangeButton"] = RightTriangleButton;
+            menuitems["IsoscelesTriangleButton"] = IsoscelesTriangleButton;
+            menuitems["AddPolygonButton"] = AddPolygonButton;
+            menuitems["AddIntersectButton"] = IntersectButton;
+            menuitems["MoveButton"] = MoveButton;
+            menuitems["DeleteButton"] = DeleteButton;
 
         }
 
@@ -76,12 +89,15 @@ namespace WindowsFormsGraphics_math
             }
         }
 
-
         private void AddIntersectAction(object sender, MouseEventArgs e)
         {
             if (selectedSeg1 == null)
             {
-                selectedSeg1 = (RealSegment)SelectFigure(e);
+                double mouseX = cs1.VisualToRealX(e.X);
+                double mouseY = cs1.VisualToRealY(e.Y);
+                clickPoint = new RealPoint(mouseX, mouseY);
+
+                selectedSeg1 = (RealSegment)SelectFigure(clickPoint);
                 if (selectedSeg1 != null)
                 {
                     selectedSeg1.SetBackLight();
@@ -91,8 +107,12 @@ namespace WindowsFormsGraphics_math
 
             else
             {
+                double mouseX = cs1.VisualToRealX(e.X);
+                double mouseY = cs1.VisualToRealY(e.Y);
+                clickPoint = new RealPoint(mouseX, mouseY);
+
                 this.Text = "select second segment";
-                selectedSeg2 = (RealSegment)SelectFigure(e);
+                selectedSeg2 = (RealSegment)SelectFigure(clickPoint);
                 if (selectedSeg2 != null)
                 {
                     selectedSeg1.UnSetBackLight();
@@ -161,6 +181,7 @@ namespace WindowsFormsGraphics_math
             }
         }
 
+        //Todo Global to Local SelectedPoint
         private void AddRectangeAction(object sender, MouseEventArgs e)
         {
             double x;
@@ -371,61 +392,20 @@ namespace WindowsFormsGraphics_math
             }
         }
 
+
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (actionNumber != -1)
+            if (actions.ContainsKey(actionKey))
             {
-                actions[actionNumber](sender, e);
+                actions[actionKey](sender, e);
             }
-
-            int iii = 0;
-            int iii2 = 0;
-            //if (IntersectButton.Checked)
-            //{
-            //    AddIntersectAction(sender, e);
-            //}            
-            //if (AddPointButton.Checked)
-            //{
-            //    AddPointAction(sender, e);
-            //}           
-            //if (AddLineButton.Checked)
-            //{
-            //    AddLineAction(sender, e);
-            //}
-            //if (AddRectangleButton.Checked)
-            //{
-            //    AddRectangeAction(sender, e);
-            //}
-            //if (AddCircleButton.Checked)
-            //{
-            //    AddCircleAction(sender, e);
-            //}
-            //if (RightTriangleButton.Checked)
-            //{
-            //    AddRightTriangeAction(sender, e);
-            //}
-            //if (AddPolygonButton.Checked)
-            //{
-            //    AddPolygonAction(sender, e);
-            //}
-
-            //if (IsoscelesTriangleButton.Checked)
-            //{
-            //    AddIsoscelesAction(sender, e);
-            //}
-            
             pictureBox1.Invalidate();
         }
 
-
-
-        private RealFigure SelectFigure(MouseEventArgs e)
+        private RealFigure SelectFigure(RealPoint clickPoint)
         {
             foreach (RealFigure figure in realFigureList)
-            {           
-                double mouseX = cs1.VisualToRealX(e.X);
-                double mouseY = cs1.VisualToRealY(e.Y);
-                clickPoint = new RealPoint(mouseX, mouseY);                   
+            {                        
                 if (figure.HitTest(clickPoint, cs1))
                 {
                     return figure;
@@ -433,22 +413,6 @@ namespace WindowsFormsGraphics_math
             }
             return null;
         }
-
-        //private void SelectFigure(MouseEventArgs e)
-        //{
-        //    foreach (RealFigure figure in realFigureList)
-        //    {
-        //        double mouseX = cs1.VisualToRealX(e.X);
-        //        double mouseY = cs1.VisualToRealY(e.Y);
-        //        clickPoint = new RealPoint(mouseX, mouseY);
-        //        if (figure.HitTest(clickPoint, cs1))
-        //        {
-        //            selected = figure;
-        //            break;
-        //        }
-        //    }
-        //}
-
 
         private void SelectLabel(MouseEventArgs e) // top left --> center // change this code 
         { 
@@ -468,23 +432,43 @@ namespace WindowsFormsGraphics_math
             }
         }
         
-
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
              if (MoveButton.Checked)
              {                 
-                 SelectLabel(e);              
-                 selected = SelectFigure(e); 
+                SelectLabel(e);
+
+                double mouseX = cs1.VisualToRealX(e.X);
+                double mouseY = cs1.VisualToRealY(e.Y);
+                clickPoint = new RealPoint(mouseX, mouseY);
+
+                selected = SelectFigure(clickPoint);
+
+                 if (selected != null)
+                     Text = selected.ToString();
+                 else
+                     Text = "null";
+
                  if (selected != null)
                  {                    
                      selected.SetBackLight();
                  }
+                 else
+                 {
+                    csMove = true;
+                    clickPointPixel.X = e.X;
+                    clickPointPixel.Y = e.Y;
+                }
                  pictureBox1.Invalidate();
              }
 
              if (DeleteButton.Checked)
-             {                              
-                 selected = SelectFigure(e);
+             {
+                double mouseX = cs1.VisualToRealX(e.X);
+                double mouseY = cs1.VisualToRealY(e.Y);
+                clickPoint = new RealPoint(mouseX, mouseY);
+
+                selected = SelectFigure(clickPoint);
                  realFigureList.Remove(selected);
                  selected = null;
                  pictureBox1.Invalidate();
@@ -506,6 +490,10 @@ namespace WindowsFormsGraphics_math
             {
                 selected.UnSetBackLight();               
                 selected = null;
+            }
+            else
+            {
+                csMove = false;
             }
         }
 
@@ -530,113 +518,65 @@ namespace WindowsFormsGraphics_math
                 clickPoint.y = cs1.VisualToRealY(e.Y);
 
                 pictureBox1.Invalidate();
-            }         
+            }
             if (selected != null)
-            {                          
-                double distanceToMoveX = cs1.VisualToRealX(e.X) - clickPoint.x;  
-                double distanceToMoveY = cs1.VisualToRealY(e.Y) - clickPoint.y; 
+            {
+                double distanceToMoveX = cs1.VisualToRealX(e.X) - clickPoint.x;
+                double distanceToMoveY = cs1.VisualToRealY(e.Y) - clickPoint.y;
                 selected.Move(distanceToMoveX, distanceToMoveY);
                 clickPoint.x = cs1.VisualToRealX(e.X);
                 clickPoint.y = cs1.VisualToRealY(e.Y);
                 pictureBox1.Invalidate();
             }
-        }
 
-        private void MoveButton_Click(object sender, EventArgs e)
+            if (csMove)
+            {
+                //cs1.x0 = e.X;
+                //cs1.y0 = e.Y;
+                int distanceToMoveX = e.X - clickPointPixel.X;
+                int distanceToMoveY = e.Y - clickPointPixel.Y;
+                //Move CoordinateSystem
+                cs1.x0 += distanceToMoveX;
+                cs1.y0 += distanceToMoveY;
+                clickPointPixel.X = e.X;
+                clickPointPixel.Y = e.Y;
+                pictureBox1.Invalidate();
+            }
+        }
+              
+
+        private void CheckEngine(object sender, EventArgs e)
         {
-            CheckEngine();
-            actionNumber = -1;
-            MoveButton.Checked = true;
+            //AddPointButton.Checked = false;
+            //AddLineButton.Checked = false;
+            //AddRectangleButton.Checked = false;
+            //AddCircleButton.Checked = false;
+            //RightTriangleButton.Checked = false;
+            //IsoscelesTriangleButton.Checked = false;
+            //AddPolygonButton.Checked = false;
+            //IntersectButton.Checked = false;
+            //MoveButton.Checked = false;
+            //DeleteButton.Checked = false;
+            foreach (ToolStripItem button in menuitems.Values)
+            {
+                if (button is ToolStripMenuItem)
+                    ((ToolStripMenuItem)button).Checked = false;
+                if (button is ToolStripButton)
+                    ((ToolStripButton)button).Checked = false;
+                //button.Checked = false;
+            }
+            if (sender is ToolStripMenuItem)
+            {
+                ((ToolStripMenuItem)sender).Checked = true;
+                AddMenu.Text = "Add (" + ((ToolStripMenuItem)sender).Text + ")";
+                //AddMenu.Text = " (" + sender.ToString() + ")";
+            }
+            if (sender is ToolStripButton)
+            {
+                ((ToolStripButton)sender).Checked = true;
+            }          
+            actionKey = ((ToolStripItem)sender).Name;
+            
         }
-
-        private void AddPointButton_Click(object sender, EventArgs e)
-        {
-            CheckEngine();
-            AddPointButton.Checked = true;
-            actionNumber = 0;
-            AddMenu.Text = "Add (Point)";
-        }
-
-        private void AddLineButton_Click(object sender, EventArgs e)
-        {
-            CheckEngine();
-            AddLineButton.Checked = true;
-            actionNumber = 1;
-            AddMenu.Text = "Add (Line)";
-        }
-
-        private void CheckEngine()
-        {
-            AddPointButton.Checked = false;
-            AddLineButton.Checked = false;
-            AddRectangleButton.Checked = false;
-            AddCircleButton.Checked = false;
-            RightTriangleButton.Checked = false;
-            IsoscelesTriangleButton.Checked = false;
-            AddPolygonButton.Checked = false;
-            IntersectButton.Checked = false;
-            MoveButton.Checked = false;
-            DeleteButton.Checked = false;
-        }
-
-        private void AddRectangleButton_Click(object sender, EventArgs e)
-        {
-            CheckEngine();
-            AddRectangleButton.Checked = true;
-            actionNumber = 3;
-            AddMenu.Text = "Add (Rectangle)";
-        }
-
-        private void AddCircleButton_Click(object sender, EventArgs e)
-        {
-            CheckEngine();
-            AddCircleButton.Checked = true;
-            actionNumber = 6;
-            AddMenu.Text = "Add (Circle)";
-        }
-
-        private void RightTriangleButton_Click(object sender, EventArgs e)
-        {
-            CheckEngine();
-            RightTriangleButton.Checked = true;
-            actionNumber = 2;
-            AddMenu.Text = "Add (Right Triangle)";
-        }
-
-        private void DeleteButton_Click(object sender, EventArgs e)
-        {
-            CheckEngine();
-            DeleteButton.Checked = true;
-        }
-
-        private void IsoscelesTriangleButton_Click(object sender, EventArgs e)
-        {
-            CheckEngine();
-            IsoscelesTriangleButton.Checked = true;
-            actionNumber = 5;
-            AddMenu.Text = "Add (Isosceles Triangle)";
-        }
-
-        private void AddPolygonButton_Click(object sender, EventArgs e)
-        {
-            CheckEngine();
-            AddPolygonButton.Checked = true;
-            actionNumber = 7;
-            AddMenu.Text = "Add (Polygon)";
-        }
-
-        private void IntersectButton_Click(object sender, EventArgs e)
-        {
-            CheckEngine();
-            IntersectButton.Checked = true;
-            actionNumber = 4;
-            AddMenu.Text = "Add (Intersect)";
-        }
-
-        //                         0                1                2                     3                   4
-       // Action[] actions = { AddPointAction, AddLineAction, AddRightTriangeAction, AddRectangeAction, AddIntersectAction, 
-            //                          5                 6                7
-        //                       AddIsoscelesAction, AddCircleAction, AddPolygonAction};
-
     }
 }

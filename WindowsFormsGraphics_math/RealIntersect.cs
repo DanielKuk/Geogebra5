@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 
-namespace WindowsFormsGraphics_math
+namespace Geogebra3
 {
     class RealIntersect : RealFigure
     {
@@ -55,6 +55,15 @@ namespace WindowsFormsGraphics_math
             //{
             //    point.Draw(g, cs);
             //}
+        }
+
+        public override bool HitTest(RealPoint pt, CoordinateSystem cs)
+        {
+            if (cs.GetDistance(pt.x, pt.y, intersectPoint.x, intersectPoint.y) < cs.epsilon)
+            {
+                return true;
+            }
+            return false;
         }
     }
 

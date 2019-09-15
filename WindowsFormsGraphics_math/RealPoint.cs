@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 
-namespace WindowsFormsGraphics_math
+namespace Geogebra3
 {
     class RealPoint : RealFigure
     {
@@ -29,14 +29,14 @@ namespace WindowsFormsGraphics_math
             isSelected = false;            
         }
 
-        public override bool HitTest(RealPoint pt, CoordinateSystem cs)
-        {
-            if (cs.GetDistance(pt.x, pt.y, x, y) < cs.epsilon)
-            {
-                return true;
-            }
-            return false;
-        }
+        //public override bool HitTest(RealPoint pt, CoordinateSystem cs)
+        //{
+        //    if (cs.GetDistance(pt.x, pt.y, x, y) < cs.epsilon)
+        //    {
+        //        return true;
+        //    }
+        //    return false;
+        //}
 
         public override void Move(double distanceToMoveX, double distanceToMoveY)
         {

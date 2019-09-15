@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 
-namespace WindowsFormsGraphics_math
+namespace Geogebra3
 {
     class RealRectangle : RealFigure
     {
@@ -21,8 +21,11 @@ namespace WindowsFormsGraphics_math
 
         public override bool HitTest(RealPoint pt, CoordinateSystem cs)
         {
-            //        4      <   6          8       >  4          8            6           2        <   4 
-            if (firstPoint.x < pt.x && firstPoint.y > pt.y && secondPoint.x > pt.x && secondPoint.y < pt.y)
+            
+            if (firstPoint.x < pt.x && pt.x < secondPoint.x  &&  firstPoint.y > pt.y &&  pt.y > secondPoint.y ||
+                secondPoint.x < pt.x && pt.x < firstPoint.x  &&  secondPoint.y > pt.y &&  pt.y > firstPoint.y ||
+                firstPoint.x > pt.x && pt.x > secondPoint.x  &&  firstPoint.y > pt.y && pt.y > secondPoint.y ||
+                secondPoint.x > pt.x && pt.x > firstPoint.x  &&  secondPoint.y > pt.y && pt.y > firstPoint.y)
             {
                 return true;
             }

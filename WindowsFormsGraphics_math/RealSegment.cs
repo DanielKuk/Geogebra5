@@ -5,7 +5,7 @@ using System.Text;
 using System.Drawing;
 
 
-namespace WindowsFormsGraphics_math
+namespace Geogebra3
 
 {
     class RealSegment : RealFigure

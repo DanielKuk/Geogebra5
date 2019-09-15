@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace WindowsFormsGraphics_math
+namespace Geogebra3
 {
     static class Program
     {

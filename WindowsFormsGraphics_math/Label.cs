@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 
-namespace WindowsFormsGraphics_math
+namespace Geogebra3
 {
     class Label  // point has a label == композиция
     {     
@@ -16,9 +16,7 @@ namespace WindowsFormsGraphics_math
         public static int round = 0;
         public double height;
         public double width;
-        //modification
-        //test2
-        //test3
+
 
         public Label(bool visible = true)
         {                     
@@ -47,7 +45,7 @@ namespace WindowsFormsGraphics_math
                 this.width = cs.VisualToRealDistance(size.Width);
 
                 // g.DrawRectangle(Pens.Red, labelX , labelY, size.Width, size.Height);
-                g.DrawString(name, cs.fontLabel, cs.brush, labelX, labelY);
+                g.DrawString(name + x + ", " + y, cs.fontLabel, cs.brush, labelX, labelY);
 
             }
         }
