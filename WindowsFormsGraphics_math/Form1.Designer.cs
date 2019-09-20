@@ -51,10 +51,10 @@
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.SystemColors.Window;
-            this.pictureBox1.Location = new System.Drawing.Point(8, 23);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1021, 348);
+            this.pictureBox1.Size = new System.Drawing.Size(1588, 583);
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
@@ -72,7 +72,8 @@
             this.RoundingButton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1059, 25);
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.toolStrip1.Size = new System.Drawing.Size(1588, 32);
             this.toolStrip1.TabIndex = 8;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -90,7 +91,7 @@
             this.IntersectButton});
             this.AddMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.AddMenu.Name = "AddMenu";
-            this.AddMenu.Size = new System.Drawing.Size(81, 22);
+            this.AddMenu.Size = new System.Drawing.Size(114, 29);
             this.AddMenu.Text = "Add (Point)";
             // 
             // AddPointButton
@@ -99,7 +100,7 @@
             this.AddPointButton.CheckOnClick = true;
             this.AddPointButton.CheckState = System.Windows.Forms.CheckState.Checked;
             this.AddPointButton.Name = "AddPointButton";
-            this.AddPointButton.Size = new System.Drawing.Size(180, 22);
+            this.AddPointButton.Size = new System.Drawing.Size(199, 30);
             this.AddPointButton.Text = "Add Point";
             this.AddPointButton.Click += new System.EventHandler(this.CheckEngine);
             // 
@@ -107,7 +108,7 @@
             // 
             this.AddLineButton.CheckOnClick = true;
             this.AddLineButton.Name = "AddLineButton";
-            this.AddLineButton.Size = new System.Drawing.Size(180, 22);
+            this.AddLineButton.Size = new System.Drawing.Size(199, 30);
             this.AddLineButton.Text = "Add Line";
             this.AddLineButton.Click += new System.EventHandler(this.CheckEngine);
             // 
@@ -115,7 +116,7 @@
             // 
             this.AddRectangleButton.CheckOnClick = true;
             this.AddRectangleButton.Name = "AddRectangleButton";
-            this.AddRectangleButton.Size = new System.Drawing.Size(180, 22);
+            this.AddRectangleButton.Size = new System.Drawing.Size(199, 30);
             this.AddRectangleButton.Text = "Add Rectangle";
             this.AddRectangleButton.Click += new System.EventHandler(this.CheckEngine);
             // 
@@ -123,7 +124,7 @@
             // 
             this.AddCircleButton.CheckOnClick = true;
             this.AddCircleButton.Name = "AddCircleButton";
-            this.AddCircleButton.Size = new System.Drawing.Size(180, 22);
+            this.AddCircleButton.Size = new System.Drawing.Size(199, 30);
             this.AddCircleButton.Text = "Add Circle";
             this.AddCircleButton.Click += new System.EventHandler(this.CheckEngine);
             // 
@@ -133,14 +134,14 @@
             this.RightTriangleButton,
             this.IsoscelesTriangleButton});
             this.AddTriangleButton.Name = "AddTriangleButton";
-            this.AddTriangleButton.Size = new System.Drawing.Size(180, 22);
+            this.AddTriangleButton.Size = new System.Drawing.Size(199, 30);
             this.AddTriangleButton.Text = "Add Triangle";
             // 
             // RightTriangleButton
             // 
             this.RightTriangleButton.CheckOnClick = true;
             this.RightTriangleButton.Name = "RightTriangleButton";
-            this.RightTriangleButton.Size = new System.Drawing.Size(180, 22);
+            this.RightTriangleButton.Size = new System.Drawing.Size(154, 30);
             this.RightTriangleButton.Text = "Right";
             this.RightTriangleButton.Click += new System.EventHandler(this.CheckEngine);
             // 
@@ -148,7 +149,7 @@
             // 
             this.IsoscelesTriangleButton.CheckOnClick = true;
             this.IsoscelesTriangleButton.Name = "IsoscelesTriangleButton";
-            this.IsoscelesTriangleButton.Size = new System.Drawing.Size(180, 22);
+            this.IsoscelesTriangleButton.Size = new System.Drawing.Size(154, 30);
             this.IsoscelesTriangleButton.Text = "Isosceles";
             this.IsoscelesTriangleButton.Click += new System.EventHandler(this.CheckEngine);
             // 
@@ -156,19 +157,19 @@
             // 
             this.AddPolygonButton.CheckOnClick = true;
             this.AddPolygonButton.Name = "AddPolygonButton";
-            this.AddPolygonButton.Size = new System.Drawing.Size(180, 22);
+            this.AddPolygonButton.Size = new System.Drawing.Size(199, 30);
             this.AddPolygonButton.Text = "Add Polygon";
             this.AddPolygonButton.Click += new System.EventHandler(this.CheckEngine);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(196, 6);
             // 
             // IntersectButton
             // 
             this.IntersectButton.Name = "IntersectButton";
-            this.IntersectButton.Size = new System.Drawing.Size(180, 22);
+            this.IntersectButton.Size = new System.Drawing.Size(199, 30);
             this.IntersectButton.Text = "Intersect";
             this.IntersectButton.Click += new System.EventHandler(this.CheckEngine);
             // 
@@ -178,7 +179,7 @@
             this.MoveButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.MoveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.MoveButton.Name = "MoveButton";
-            this.MoveButton.Size = new System.Drawing.Size(41, 22);
+            this.MoveButton.Size = new System.Drawing.Size(61, 29);
             this.MoveButton.Text = "Move";
             this.MoveButton.Click += new System.EventHandler(this.CheckEngine);
             // 
@@ -188,7 +189,7 @@
             this.DeleteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.DeleteButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.DeleteButton.Name = "DeleteButton";
-            this.DeleteButton.Size = new System.Drawing.Size(44, 22);
+            this.DeleteButton.Size = new System.Drawing.Size(66, 29);
             this.DeleteButton.Text = "Delete";
             this.DeleteButton.Click += new System.EventHandler(this.CheckEngine);
             // 
@@ -198,17 +199,16 @@
             this.RoundingButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.RoundingButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.RoundingButton.Name = "RoundingButton";
-            this.RoundingButton.Size = new System.Drawing.Size(63, 22);
+            this.RoundingButton.Size = new System.Drawing.Size(93, 29);
             this.RoundingButton.Text = "Rounding";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1059, 379);
+            this.ClientSize = new System.Drawing.Size(1588, 583);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.pictureBox1);
-            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);

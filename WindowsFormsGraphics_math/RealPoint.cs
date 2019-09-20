@@ -29,14 +29,14 @@ namespace Geogebra3
             isSelected = false;            
         }
 
-        //public override bool HitTest(RealPoint pt, CoordinateSystem cs)
-        //{
-        //    if (cs.GetDistance(pt.x, pt.y, x, y) < cs.epsilon)
-        //    {
-        //        return true;
-        //    }
-        //    return false;
-        //}
+        public override bool HitTest(RealPoint pt, CoordinateSystem cs)
+        {
+            if (cs.GetDistance(pt.x, pt.y, x, y) < cs.epsilon)
+            {
+                return true;
+            }
+            return false;
+        }
 
         public override void Move(double distanceToMoveX, double distanceToMoveY)
         {

@@ -81,7 +81,9 @@ namespace Geogebra3
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g = e.Graphics;            
+            Graphics g = e.Graphics;
+            cs1.w = pictureBox1.Width;
+            cs1.h = pictureBox1.Height;
             cs1.DrawCoordinateSystem(g);
             foreach (RealFigure figure in realFigureList)
             {
@@ -444,10 +446,10 @@ namespace Geogebra3
 
                 selected = SelectFigure(clickPoint);
 
-                 if (selected != null)
-                     Text = selected.ToString();
-                 else
-                     Text = "null";
+                 //if (selected != null)
+                 //    Text = selected.ToString();
+                 //else
+                 //    Text = "null";
 
                  if (selected != null)
                  {                    
@@ -538,6 +540,14 @@ namespace Geogebra3
                 //Move CoordinateSystem
                 cs1.x0 += distanceToMoveX;
                 cs1.y0 += distanceToMoveY;
+
+              // Text = cs1.x0 + " " + cs1.y0 + ", height = " + cs1.h;
+                if (cs1.y0 > cs1.h)
+                {
+                    Text = "y0 > h"; 
+                }
+
+                
                 clickPointPixel.X = e.X;
                 clickPointPixel.Y = e.Y;
                 pictureBox1.Invalidate();
