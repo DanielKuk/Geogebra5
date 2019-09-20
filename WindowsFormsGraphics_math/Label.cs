@@ -44,7 +44,7 @@ namespace Geogebra3
                 this.height = cs.VisualToRealDistance(size.Height);
                 this.width = cs.VisualToRealDistance(size.Width);
                 // g.DrawRectangle(Pens.Red, labelX , labelY, size.Width, size.Height);
-                String labelName = name + "(" + Math.Round(x, 1) + "; " + Math.Round(y, 1) + ")";
+                String labelName = name + "(" + Math.Round(x, 2) + "; " + Math.Round(y, 2) + ")";
                 g.DrawString(labelName, cs.fontLabel, cs.brush, labelX, labelY);
 
             }
