@@ -40,7 +40,7 @@ namespace Geogebra3
             InitializeComponent();
             this.pictureBox1.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseWheel);
             // create Coordinate System
-            int unitInterval = 30;
+            int unitInterval = 50;
             //int x0 = pictureBox1.Width / 2;
             //int y0 = pictureBox1.Height / 2;
             int x0 = 100;
@@ -533,7 +533,17 @@ namespace Geogebra3
 
         private void pictureBox1_MouseWheel(object sender, MouseEventArgs e)
         {
-            
+            int powerScale = 15;
+            double oldX = cs1.VisualToRealX(e.X);
+            double oldY = cs1.VisualToRealY(e.Y);
+            cs1.unitInterval += e.Delta / powerScale;
+
+            // cs1.x0 -= e.Delta / 11; for  cs1.VisualToRealX(e.X) == 5
+
+            cs1.x0 -= (int)Math.Round(e.Delta / (powerScale / cs1.VisualToRealX(e.X)));
+            Text = (cs1.VisualToRealX(e.X) - oldX) + " " + (cs1.VisualToRealY(e.Y) - oldY);
+            cs1.y0 += (int)Math.Round(e.Delta / (powerScale / cs1.VisualToRealY(e.Y)));
+            pictureBox1.Invalidate();
         }
 
 
