@@ -36,7 +36,9 @@ namespace Geogebra3
 
         public Form1()
         {
+            
             InitializeComponent();
+            this.pictureBox1.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseWheel);
             // create Coordinate System
             int unitInterval = 30;
             //int x0 = pictureBox1.Width / 2;
@@ -416,7 +418,7 @@ namespace Geogebra3
             return null;
         }
 
-        private void SelectLabel(MouseEventArgs e) // top left --> center // change this code 
+        private Label SelectLabel(MouseEventArgs e) // top left --> center // change this code 
         { 
             foreach (RealFigure figure in realFigureList)
             {
@@ -428,66 +430,59 @@ namespace Geogebra3
                     clickPoint = new RealPoint(mouseX, mouseY);
                     if (point.HitTestLabel(clickPoint))
                     {
-                       selectedLabel = point.label;                       
+                        return point.label;
                     }
                 }
             }
+            return null;
         }
-        
+
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-             if (MoveButton.Checked)
-             {                 
-                SelectLabel(e);
-
+            if (MoveButton.Checked)
+            {
+                selectedLabel = SelectLabel(e);
                 double mouseX = cs1.VisualToRealX(e.X);
                 double mouseY = cs1.VisualToRealY(e.Y);
                 clickPoint = new RealPoint(mouseX, mouseY);
-
                 selected = SelectFigure(clickPoint);
-
-                 //if (selected != null)
-                 //    Text = selected.ToString();
-                 //else
-                 //    Text = "null";
-
-                 if (selected != null)
-                 {                    
-                     selected.SetBackLight();
-                 }
-                 else
-                 {
+                if (selected != null)
+                {
+                    selected.SetBackLight();
+                }
+                else if (selectedLabel != null)
+                {
+                    // selectedLabel.SetBackLight(); TODO
+                }
+                else
+                {
                     csMove = true;
                     clickPointPixel.X = e.X;
                     clickPointPixel.Y = e.Y;
                 }
-                 pictureBox1.Invalidate();
-             }
+                pictureBox1.Invalidate();
+            }
 
-             if (DeleteButton.Checked)
-             {
+            if (DeleteButton.Checked)
+            {
                 double mouseX = cs1.VisualToRealX(e.X);
                 double mouseY = cs1.VisualToRealY(e.Y);
                 clickPoint = new RealPoint(mouseX, mouseY);
 
                 selected = SelectFigure(clickPoint);
-                 realFigureList.Remove(selected);
-                 selected = null;
-                 pictureBox1.Invalidate();
-             }
-            
+                realFigureList.Remove(selected);
+                selected = null;
+                pictureBox1.Invalidate();
+            }
+
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
-        {          
-
-            // deselect label
+        {   
             if (MoveButton.Checked && selectedLabel != null)
             {
                 selectedLabel = null;               
             }
-
-            // deselect figure
             if (MoveButton.Checked && selected != null)
             {
                 selected.UnSetBackLight();               
@@ -501,17 +496,11 @@ namespace Geogebra3
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-
             Graphics g = pictureBox1.CreateGraphics();
-            if (selectedPoint != null)
-            {
-                selectedPoint.x = cs1.VisualToRealX(e.X);
-                selectedPoint.y = cs1.VisualToRealY(e.Y);
-                pictureBox1.Invalidate();
-            }
-
+          
             if (selectedLabel != null)
-            {               
+            {
+                Text = "label";
                 double distanceToMoveX = cs1.VisualToRealX(e.X) - clickPoint.x;
                 double distanceToMoveY = cs1.VisualToRealY(e.Y) - clickPoint.y;
                 selectedLabel.offsetX += distanceToMoveX;
@@ -530,30 +519,23 @@ namespace Geogebra3
                 clickPoint.y = cs1.VisualToRealY(e.Y);
                 pictureBox1.Invalidate();
             }
-
             if (csMove)
-            {
-                //cs1.x0 = e.X;
-                //cs1.y0 = e.Y;
+            {               
                 int distanceToMoveX = e.X - clickPointPixel.X;
-                int distanceToMoveY = e.Y - clickPointPixel.Y;
-                //Move CoordinateSystem
+                int distanceToMoveY = e.Y - clickPointPixel.Y;              
                 cs1.x0 += distanceToMoveX;
-                cs1.y0 += distanceToMoveY;
-
-              // Text = cs1.x0 + " " + cs1.y0 + ", height = " + cs1.h;
-                if (cs1.y0 > cs1.h)
-                {
-                    Text = "y0 > h"; 
-                }
-
-                
+                cs1.y0 += distanceToMoveY;                
                 clickPointPixel.X = e.X;
                 clickPointPixel.Y = e.Y;
                 pictureBox1.Invalidate();
             }
         }
-              
+
+        private void pictureBox1_MouseWheel(object sender, MouseEventArgs e)
+        {
+            
+        }
+
 
         private void CheckEngine(object sender, EventArgs e)
         {

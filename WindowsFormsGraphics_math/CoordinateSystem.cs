@@ -9,7 +9,6 @@ namespace Geogebra3
     class CoordinateSystem
     {
         public Font fontLabel;
-        public int labelOffset;
         public Brush brush;
         public Brush selectedBrush;
         public Pen pen;
@@ -99,18 +98,13 @@ namespace Geogebra3
        
         public void DrawCoordinateSystem(Graphics g)
         {
-//             g.DrawLine(pen, new Point(1, 100), new Point(200, 200));
-
             int counter = 0;
             g.DrawLine(pen, new Point(0, y0), new Point(w, y0));
             g.DrawLine(pen, new Point(x0, 0), new Point(x0, h));
-
-
+            
             // numbers of x Axis
-
             if (y0 > h)
             {
-
                 for (int i = x0; i < w; i += unitInterval)
                 {
                     g.DrawLine(pen, new Point(i, h - 2 * measure), new Point(i, h));
@@ -125,11 +119,9 @@ namespace Geogebra3
                     g.DrawString(counter.ToString(), fontMeasure, brush, i - 5, h - fontMeasure.Height - measure);
                     counter--;
                 }
-            }
-            //Added
+            }        
             else if (y0 < 0)
             {
-
                 for (int i = x0; i < w; i += unitInterval)
                 {
                     g.DrawLine(pen, new Point(i, 2 * measure), new Point(i, 30));
@@ -162,19 +154,9 @@ namespace Geogebra3
                     counter--;
                 }
             }
-
-          
-            //12345
-
-
-
-
-
-
-
-            // numbers of y Axis (Added)
+            
+            // numbers of y Axis 
             counter = 0;
-
             if (x0 < 0)
             {
                 for (int i = y0; i < h; i += unitInterval)
