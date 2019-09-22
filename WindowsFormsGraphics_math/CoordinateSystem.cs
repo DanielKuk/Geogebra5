@@ -126,6 +126,25 @@ namespace Geogebra3
                     counter--;
                 }
             }
+            //Added
+            else if (y0 < 0)
+            {
+
+                for (int i = x0; i < w; i += unitInterval)
+                {
+                    g.DrawLine(pen, new Point(i, 2 * measure), new Point(i, 30));
+                    if (counter != 0)
+                        g.DrawString(counter.ToString(), fontMeasure, brush, i - 5, 8 + fontMeasure.Height + measure);
+                    counter++;
+                }
+                counter = 0;
+                for (int i = x0; i > 0; i -= unitInterval)
+                {
+                    g.DrawLine(pen, new Point(i, 2 * measure), new Point(i, 30));
+                    g.DrawString(counter.ToString(), fontMeasure, brush, i - 5, 8 + fontMeasure.Height + measure);
+                    counter--;
+                }
+            }
             else
             {
                 for (int i = x0; i < w; i += unitInterval)
@@ -153,22 +172,62 @@ namespace Geogebra3
 
 
 
-            // numbers of y Axis
+            // numbers of y Axis (Added)
             counter = 0;
-            for (int i = y0; i < h; i += unitInterval)
+
+            if (x0 < 0)
             {
-                g.DrawLine(pen, new Point(x0 - measure, i), new Point(x0 + measure, i));
-                if (counter != 0)
-                    g.DrawString(counter.ToString(), fontMeasure, brush, x0 + 3 * measure, i - 10);
-                counter--;
+                for (int i = y0; i < h; i += unitInterval)
+                {
+                    g.DrawLine(pen, new Point(1 + measure, i), new Point(x0 + measure, i));
+                    if (counter != 0)
+                        g.DrawString(counter.ToString(), fontMeasure, brush, measure + 1, i - 10);
+                    counter--;
+                }
+                counter = 0;
+                for (int i = y0; i > 0; i -= unitInterval)
+                {
+                    g.DrawLine(pen, new Point(1 + measure, i), new Point(x0 + measure, i));
+                    if (counter != 0)
+                        g.DrawString(counter.ToString(), fontMeasure, brush, measure + 1, i - 10);
+                    counter++;
+                }
             }
-            counter = 0;
-            for (int i = y0; i > 0; i -= unitInterval)
+            else if (x0 > w)
             {
-                g.DrawLine(pen, new Point(x0 - measure, i), new Point(x0 + measure, i));
-                if (counter != 0)
-                    g.DrawString(counter.ToString(), fontMeasure, brush, x0 + 3 * measure, i - 10);
-                counter++;
+                for (int i = y0; i < h; i += unitInterval)
+                {
+                    g.DrawLine(pen, new Point(w - measure - 1, i), new Point(x0 + measure, i));
+                    if (counter != 0)
+                        g.DrawString(counter.ToString(), fontMeasure, brush, w - measure - 22, i - 10);
+                    counter--;
+                }
+                counter = 0;
+                for (int i = y0; i > 0; i -= unitInterval)
+                {
+                    g.DrawLine(pen, new Point(w - measure - 1, i), new Point(x0 + measure, i));
+                    if (counter != 0)
+                        g.DrawString(counter.ToString(), fontMeasure, brush, w - measure - 22, i - 10);
+                    counter++;
+                }
+            }
+            else
+            {
+                for (int i = y0; i < h; i += unitInterval)
+                {
+                    g.DrawLine(pen, new Point(x0 - measure, i), new Point(x0 + measure, i));
+                    if (counter != 0)
+                        g.DrawString(counter.ToString(), fontMeasure, brush, x0 + 3 * measure, i - 10);
+                    counter--;
+                }
+                counter = 0;
+                for (int i = y0; i > 0; i -= unitInterval)
+                {
+                    g.DrawLine(pen, new Point(x0 - measure, i), new Point(x0 + measure, i));
+                    if (counter != 0)
+                        g.DrawString(counter.ToString(), fontMeasure, brush, x0 + 3 * measure, i - 10);
+                    counter++;
+                }
             }
         }
     }
