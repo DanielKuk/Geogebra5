@@ -537,43 +537,27 @@ namespace Geogebra3
             double oldX = cs1.VisualToRealX(e.X);
             double oldY = cs1.VisualToRealY(e.Y);
             cs1.unitInterval += e.Delta / powerScale;
-
-            // cs1.x0 -= e.Delta / 11; for  cs1.VisualToRealX(e.X) == 5
-
-            cs1.x0 -= (int)Math.Round(e.Delta / (powerScale / cs1.VisualToRealX(e.X)));
-            Text = (cs1.VisualToRealX(e.X) - oldX) + " " + (cs1.VisualToRealY(e.Y) - oldY);
-            cs1.y0 += (int)Math.Round(e.Delta / (powerScale / cs1.VisualToRealY(e.Y)));
+            cs1.x0 -= cs1.RealToVisualDistance(oldX - cs1.VisualToRealX(e.X));
+            cs1.y0 += cs1.RealToVisualDistance(oldY - cs1.VisualToRealY(e.Y));
             pictureBox1.Invalidate();
         }
 
 
         private void CheckEngine(object sender, EventArgs e)
-        {
-            //AddPointButton.Checked = false;
-            //AddLineButton.Checked = false;
-            //AddRectangleButton.Checked = false;
-            //AddCircleButton.Checked = false;
-            //RightTriangleButton.Checked = false;
-            //IsoscelesTriangleButton.Checked = false;
-            //AddPolygonButton.Checked = false;
-            //IntersectButton.Checked = false;
-            //MoveButton.Checked = false;
-            //DeleteButton.Checked = false;
+        {           
             foreach (ToolStripItem button in menuitems.Values)
             {
                 if (button is ToolStripMenuItem)
                     ((ToolStripMenuItem)button).Checked = false;
                 if (button is ToolStripButton)
-                    ((ToolStripButton)button).Checked = false;
-                //button.Checked = false;
+                    ((ToolStripButton)button).Checked = false;           
             }
             if (sender is ToolStripMenuItem)
             {
-                ((ToolStripMenuItem)sender).Checked = true;
-                AddMenu.Text = "Add (" + ((ToolStripMenuItem)sender).Text + ")";
-                //AddMenu.Text = " (" + sender.ToString() + ")";
+                ((ToolStripMenuItem)sender).Checked = true;   
+                 AddMenu.Text = sender.ToString();
             }
-            if (sender is ToolStripButton)
+            else if (sender is ToolStripButton)
             {
                 ((ToolStripButton)sender).Checked = true;
             }          

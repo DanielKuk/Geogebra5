@@ -31,7 +31,7 @@ namespace Geogebra3
 
         public override bool HitTest(RealPoint pt, CoordinateSystem cs)
         {
-            if (cs.GetDistance(pt.x, pt.y, x, y) < cs.epsilon)
+            if (cs.GetDistance(pt.x, pt.y, x, y) < cs.epsilon) // при масштабирование изменять радиус захвата точки
             {
                 return true;
             }

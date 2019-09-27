@@ -141,16 +141,16 @@
             // 
             this.RightTriangleButton.CheckOnClick = true;
             this.RightTriangleButton.Name = "RightTriangleButton";
-            this.RightTriangleButton.Size = new System.Drawing.Size(154, 30);
-            this.RightTriangleButton.Text = "Right";
+            this.RightTriangleButton.Size = new System.Drawing.Size(230, 30);
+            this.RightTriangleButton.Text = "Add Right Triangle";
             this.RightTriangleButton.Click += new System.EventHandler(this.CheckEngine);
             // 
             // IsoscelesTriangleButton
             // 
             this.IsoscelesTriangleButton.CheckOnClick = true;
             this.IsoscelesTriangleButton.Name = "IsoscelesTriangleButton";
-            this.IsoscelesTriangleButton.Size = new System.Drawing.Size(154, 30);
-            this.IsoscelesTriangleButton.Text = "Isosceles";
+            this.IsoscelesTriangleButton.Size = new System.Drawing.Size(258, 30);
+            this.IsoscelesTriangleButton.Text = "Add Isosceles Triangle";
             this.IsoscelesTriangleButton.Click += new System.EventHandler(this.CheckEngine);
             // 
             // AddPolygonButton
