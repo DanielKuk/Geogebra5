@@ -26,13 +26,14 @@ namespace Geogebra3
         List<RealFigure> realFigureList;
         RealPoint selectedPoint;
         RealFigure selected;
-        RealPoint clickPoint;
+        RealPoint clickPoint; 
+        Point clickPointPixel = new Point(0, 0);
         List<RealPoint> pointList;
         Label selectedLabel;
         RealSegment selectedSeg1 = null;
         RealSegment selectedSeg2 = null;
         bool csMove = false;
-        Point clickPointPixel = new Point(0, 0);
+       
 
         public Form1()
         {
@@ -424,11 +425,10 @@ namespace Geogebra3
             {
                 if (figure is RealPoint)
                 {
-                    RealPoint point = (RealPoint)figure;
-                    double mouseX = cs1.VisualToRealX(e.X);
-                    double mouseY = cs1.VisualToRealY(e.Y);
-                    clickPoint = new RealPoint(mouseX, mouseY);
-                    if (point.HitTestLabel(clickPoint))
+                    RealPoint point = (RealPoint)figure;                   
+                    clickPointPixel.X = e.X;
+                    clickPointPixel.Y = e.Y;
+                    if (point.HitTestLabel(clickPointPixel, cs1))
                     {
                         return point.label;
                     }
@@ -501,13 +501,12 @@ namespace Geogebra3
             if (selectedLabel != null)
             {
                 Text = "label";
-                double distanceToMoveX = cs1.VisualToRealX(e.X) - clickPoint.x;
-                double distanceToMoveY = cs1.VisualToRealY(e.Y) - clickPoint.y;
+                int distanceToMoveX = e.X - clickPointPixel.X;
+                int distanceToMoveY = e.Y - clickPointPixel.Y;
                 selectedLabel.offsetX += distanceToMoveX;
                 selectedLabel.offsetY += distanceToMoveY;
-                clickPoint.x = cs1.VisualToRealX(e.X);
-                clickPoint.y = cs1.VisualToRealY(e.Y);
-
+                clickPointPixel.X = e.X;
+                clickPointPixel.Y = e.Y;
                 pictureBox1.Invalidate();
             }
             if (selected != null)

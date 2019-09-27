@@ -44,12 +44,12 @@ namespace Geogebra3
             y += distanceToMoveY;
         }
 
-        public bool HitTestLabel(RealPoint clickPoint)
-        {              
-            if (x + label.offsetX < clickPoint.x && 
-                y + label.offsetY > clickPoint.y && 
-                x + label.offsetX + label.width > clickPoint.x && 
-                y + label.offsetY - label.height < clickPoint.y)
+        public bool HitTestLabel(Point clickPointPixel, CoordinateSystem cs)
+        {
+            if (cs.RealToVisualX(x) + label.offsetX < clickPointPixel.X &&
+                cs.RealToVisualY(y) + label.offsetY < clickPointPixel.Y &&
+                cs.RealToVisualX(x) + label.offsetX + label.width > clickPointPixel.X &&
+                cs.RealToVisualY(y) + label.offsetY + label.height > clickPointPixel.Y)
             {                
                 return true;
             }
