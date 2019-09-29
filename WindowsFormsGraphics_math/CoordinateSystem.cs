@@ -15,7 +15,8 @@ namespace Geogebra3
         public Pen selectedPen;
 
         public int unitInterval; // in pixels   
-        public int measure;
+        public int dashLength;
+        int distanceDashMeasurementText;
         public Font fontMeasure;
         public int x0;
         public int y0;
@@ -34,7 +35,8 @@ namespace Geogebra3
             fontMeasure = new Font("Calibri", 11);
             //fontMeasure = new Font("Calibri", 24); 
             fontLabel = new Font("Arial", 12, FontStyle.Bold);            
-            measure = 3;
+            dashLength = 7;
+            distanceDashMeasurementText = 10; // distance between Dash and MeasurementText in pixels
             radiusPoint = 5;
             this.x0 = x0;
             this.y0 = y0;
@@ -91,9 +93,34 @@ namespace Geogebra3
         {
             return p > a && p < b || p < a && p > b;
         }
-       
+
+
+
+
+        public void drawXAxis(Graphics g, int dashUpPoint, int dashDownPoint, int measurementTextPositionY)
+        {
+            int counter = 0;            
+            for (int i = x0; i < w; i += unitInterval)
+            {
+                g.DrawLine(pen, new Point(i, dashUpPoint), new Point(i, dashDownPoint)); // черточки внизу экрана                
+                if (counter != 0)
+                    g.DrawString(counter.ToString(), fontMeasure, brush, i - 5, measurementTextPositionY);
+                counter++;
+            }
+            counter = 0;
+            for (int i = x0; i > 0; i -= unitInterval)
+            {
+                g.DrawLine(pen, new Point(i, dashUpPoint), new Point(i, dashDownPoint));
+                g.DrawString(counter.ToString(), fontMeasure, brush, i - 5, measurementTextPositionY);              
+                counter--;
+            }            
+        }
+
+
+
         public void DrawCoordinateSystem(Graphics g)
         {
+            
             int counter = 0;
             g.DrawLine(pen, new Point(0, y0), new Point(w, y0));
             g.DrawLine(pen, new Point(x0, 0), new Point(x0, h));
@@ -101,54 +128,29 @@ namespace Geogebra3
             // numbers of x Axis
             if (y0 > h)
             {
-                for (int i = x0; i < w; i += unitInterval)
-                {
-                    g.DrawLine(pen, new Point(i, h - 2 * measure), new Point(i, h));
-                    if (counter != 0)
-                        g.DrawString(counter.ToString(), fontMeasure, brush, i - 5, h - fontMeasure.Height - measure);
-                    counter++;
-                }
-                counter = 0;
-                for (int i = x0; i > 0; i -= unitInterval)
-                {
-                    g.DrawLine(pen, new Point(i, h - 2 * measure), new Point(i, h));
-                    g.DrawString(counter.ToString(), fontMeasure, brush, i - 5, h - fontMeasure.Height - measure);
-                    counter--;
-                }
+                drawXAxis(g, h - dashLength, h, h - fontMeasure.Height - (dashLength + distanceDashMeasurementText));
             }        
             else if (y0 < 0)
             {
-                for (int i = x0; i < w; i += unitInterval)
-                {
-                    g.DrawLine(pen, new Point(i, 2 * measure), new Point(i, 30));
-                    if (counter != 0)
-                        g.DrawString(counter.ToString(), fontMeasure, brush, i - 5, 8 + fontMeasure.Height + measure);
-                    counter++;
-                }
-                counter = 0;
-                for (int i = x0; i > 0; i -= unitInterval)
-                {
-                    g.DrawLine(pen, new Point(i, 2 * measure), new Point(i, 30));
-                    g.DrawString(counter.ToString(), fontMeasure, brush, i - 5, 8 + fontMeasure.Height + measure);
-                    counter--;
-                }
+                drawXAxis(g, 0, dashLength, 0 + (dashLength + distanceDashMeasurementText));                
             }
             else
             {
-                for (int i = x0; i < w; i += unitInterval)
-                {
-                    g.DrawLine(pen, new Point(i, y0 - measure), new Point(i, y0 + measure));
-                    if (counter != 0)
-                        g.DrawString(counter.ToString(), fontMeasure, brush, i - 5, y0 + 3 * measure);
-                    counter++;
-                }
-                counter = 0;
-                for (int i = x0; i > 0; i -= unitInterval)
-                {
-                    g.DrawLine(pen, new Point(i, y0 - measure), new Point(i, y0 + measure));
-                    g.DrawString(counter.ToString(), fontMeasure, brush, i - 10, y0 + 3 * measure);
-                    counter--;
-                }
+                drawXAxis(g, y0 - dashLength, y0 + dashLength, y0 + (dashLength + distanceDashMeasurementText));     
+                //for (int i = x0; i < w; i += unitInterval)
+                //{
+                //    g.DrawLine(pen, new Point(i, y0 - dashLength), new Point(i, y0 + dashLength));
+                //    if (counter != 0)
+                //        g.DrawString(counter.ToString(), fontMeasure, brush, i - 5, y0 + 3 * dashLength);
+                //    counter++;
+                //}
+                //counter = 0;
+                //for (int i = x0; i > 0; i -= unitInterval)
+                //{
+                //    g.DrawLine(pen, new Point(i, y0 - dashLength), new Point(i, y0 + dashLength));
+                //    g.DrawString(counter.ToString(), fontMeasure, brush, i - 10, y0 + 3 * dashLength);
+                //    counter--;
+                //}
             }
             
             // numbers of y Axis 
@@ -157,17 +159,17 @@ namespace Geogebra3
             {
                 for (int i = y0; i < h; i += unitInterval)
                 {
-                    g.DrawLine(pen, new Point(1 + measure, i), new Point(x0 + measure, i));
+                    g.DrawLine(pen, new Point(1 + dashLength, i), new Point(x0 + dashLength, i));
                     if (counter != 0)
-                        g.DrawString(counter.ToString(), fontMeasure, brush, measure + 1, i - 10);
+                        g.DrawString(counter.ToString(), fontMeasure, brush, dashLength + 1, i - 10);
                     counter--;
                 }
                 counter = 0;
                 for (int i = y0; i > 0; i -= unitInterval)
                 {
-                    g.DrawLine(pen, new Point(1 + measure, i), new Point(x0 + measure, i));
+                    g.DrawLine(pen, new Point(1 + dashLength, i), new Point(x0 + dashLength, i));
                     if (counter != 0)
-                        g.DrawString(counter.ToString(), fontMeasure, brush, measure + 1, i - 10);
+                        g.DrawString(counter.ToString(), fontMeasure, brush, dashLength + 1, i - 10);
                     counter++;
                 }
             }
@@ -175,17 +177,17 @@ namespace Geogebra3
             {
                 for (int i = y0; i < h; i += unitInterval)
                 {
-                    g.DrawLine(pen, new Point(w - measure - 1, i), new Point(x0 + measure, i));
+                    g.DrawLine(pen, new Point(w - dashLength - 1, i), new Point(x0 + dashLength, i));
                     if (counter != 0)
-                        g.DrawString(counter.ToString(), fontMeasure, brush, w - measure - 22, i - 10);
+                        g.DrawString(counter.ToString(), fontMeasure, brush, w - dashLength - 22, i - 10);
                     counter--;
                 }
                 counter = 0;
                 for (int i = y0; i > 0; i -= unitInterval)
                 {
-                    g.DrawLine(pen, new Point(w - measure - 1, i), new Point(x0 + measure, i));
+                    g.DrawLine(pen, new Point(w - dashLength - 1, i), new Point(x0 + dashLength, i));
                     if (counter != 0)
-                        g.DrawString(counter.ToString(), fontMeasure, brush, w - measure - 22, i - 10);
+                        g.DrawString(counter.ToString(), fontMeasure, brush, w - dashLength - 22, i - 10);
                     counter++;
                 }
             }
@@ -193,17 +195,17 @@ namespace Geogebra3
             {
                 for (int i = y0; i < h; i += unitInterval)
                 {
-                    g.DrawLine(pen, new Point(x0 - measure, i), new Point(x0 + measure, i));
+                    g.DrawLine(pen, new Point(x0 - dashLength, i), new Point(x0 + dashLength, i));
                     if (counter != 0)
-                        g.DrawString(counter.ToString(), fontMeasure, brush, x0 + 3 * measure, i - 10);
+                        g.DrawString(counter.ToString(), fontMeasure, brush, x0 + 3 * dashLength, i - 10);
                     counter--;
                 }
                 counter = 0;
                 for (int i = y0; i > 0; i -= unitInterval)
                 {
-                    g.DrawLine(pen, new Point(x0 - measure, i), new Point(x0 + measure, i));
+                    g.DrawLine(pen, new Point(x0 - dashLength, i), new Point(x0 + dashLength, i));
                     if (counter != 0)
-                        g.DrawString(counter.ToString(), fontMeasure, brush, x0 + 3 * measure, i - 10);
+                        g.DrawString(counter.ToString(), fontMeasure, brush, x0 + 3 * dashLength, i - 10);
                     counter++;
                 }
             }
