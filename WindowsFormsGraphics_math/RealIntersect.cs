@@ -59,7 +59,7 @@ namespace Geogebra3
 
         public override bool HitTest(RealPoint pt, CoordinateSystem cs)
         {
-            if (cs.GetDistance(pt.x, pt.y, intersectPoint.x, intersectPoint.y) < cs.epsilon)
+            if (cs.GetDistance(pt.x, pt.y, intersectPoint.x, intersectPoint.y) < cs.radiusPoint)
             {
                 return true;
             }

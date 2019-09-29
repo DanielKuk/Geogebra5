@@ -329,7 +329,7 @@ namespace Geogebra3
                 selectedPoint = new RealPoint(x, y);
                 int x1 = cs1.RealToVisualX(pointList[0].x);
                 int y1 = cs1.RealToVisualY(pointList[0].y);
-                if (cs1.GetDistance(x1, y1, e.X, e.Y) < cs1.radius)
+                if (cs1.GetDistance(x1, y1, e.X, e.Y) < cs1.radiusPoint)
                 {
                     creatingLine = false;
                     pointList.RemoveAt(pointList.Count - 1);
@@ -538,7 +538,6 @@ namespace Geogebra3
                 double oldX = cs1.VisualToRealX(e.X);
                 double oldY = cs1.VisualToRealY(e.Y);
                 cs1.unitInterval += e.Delta / powerScale;
-                cs1.epsilon += (e.Delta / powerScale) / powerScale;         //Added
                 cs1.x0 -= cs1.RealToVisualDistance(oldX - cs1.VisualToRealX(e.X));
                 cs1.y0 += cs1.RealToVisualDistance(oldY - cs1.VisualToRealY(e.Y));
                 pictureBox1.Invalidate();

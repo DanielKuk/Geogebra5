@@ -31,7 +31,8 @@ namespace Geogebra3
 
         public override bool HitTest(RealPoint pt, CoordinateSystem cs)
         {
-            if (cs.GetDistance(pt.x, pt.y, x, y) < cs.epsilon) // при масштабирование изменять радиус захвата точки
+
+            if (cs.RealToVisualDistance(cs.GetDistance(pt.x, pt.y, x, y)) < cs.radiusPoint) // при масштабирование изменять радиус захвата точки
             {
                 return true;
             }
@@ -61,7 +62,7 @@ namespace Geogebra3
             base.Draw(g, cs);
             int xVisual = cs.RealToVisualX(this.x);
             int yVisual = cs.RealToVisualY(this.y);
-            g.FillEllipse(pen.Brush, xVisual - cs.radius / 2, yVisual - cs.radius / 2, cs.radius, cs.radius);           
+            g.FillEllipse(pen.Brush, xVisual - cs.radiusPoint, yVisual - cs.radiusPoint, 2 * cs.radiusPoint, 2 * cs.radiusPoint);           
             label.Draw(g, cs, x, y);
         }
     }

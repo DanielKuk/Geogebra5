@@ -21,8 +21,8 @@ namespace Geogebra3
         public int y0;
         public int w;
         public int h;
-        public int radius;
-        public double epsilon;
+        public int radiusPoint;
+     
 
 
         public CoordinateSystem(int unitInterval, int x0, int y0, int w, int h)
@@ -35,17 +35,13 @@ namespace Geogebra3
             //fontMeasure = new Font("Calibri", 24); 
             fontLabel = new Font("Arial", 12, FontStyle.Bold);            
             measure = 3;
-            radius = 10;
+            radiusPoint = 5;
             this.x0 = x0;
             this.y0 = y0;
             this.w = w;
             this.h = h;
             this.unitInterval = unitInterval;
-            epsilon = 0.2;
-
         }
-
-
 
         public int RealToVisualDistance(double distance) // from meters to pixels
         {
