@@ -532,13 +532,21 @@ namespace Geogebra3
 
         private void pictureBox1_MouseWheel(object sender, MouseEventArgs e)
         {
-            int powerScale = 15;
-            double oldX = cs1.VisualToRealX(e.X);
-            double oldY = cs1.VisualToRealY(e.Y);
-            cs1.unitInterval += e.Delta / powerScale;
-            cs1.x0 -= cs1.RealToVisualDistance(oldX - cs1.VisualToRealX(e.X));
-            cs1.y0 += cs1.RealToVisualDistance(oldY - cs1.VisualToRealY(e.Y));
-            pictureBox1.Invalidate();
+            if (cs1.unitInterval >= 26)
+            {
+                int powerScale = 15;
+                double oldX = cs1.VisualToRealX(e.X);
+                double oldY = cs1.VisualToRealY(e.Y);
+                cs1.unitInterval += e.Delta / powerScale;
+                cs1.epsilon += (e.Delta / powerScale) / powerScale;         //Added
+                cs1.x0 -= cs1.RealToVisualDistance(oldX - cs1.VisualToRealX(e.X));
+                cs1.y0 += cs1.RealToVisualDistance(oldY - cs1.VisualToRealY(e.Y));
+                pictureBox1.Invalidate();
+            }
+            else
+            {
+                cs1.unitInterval = 26;
+            }
         }
 
 
