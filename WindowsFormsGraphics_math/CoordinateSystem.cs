@@ -85,17 +85,10 @@ namespace Geogebra3
             return GetDistance(p1.x, p1.y, p2.x, p2.y);
         }
 
-
-
-
-
         public bool PointInInterval(double p, double a, double b)
         {
             return p > a && p < b || p < a && p > b;
         }
-
-
-
 
         public void drawXAxis(Graphics g, int dashUpPoint, int dashDownPoint, int measurementTextPositionY)
         {
@@ -116,15 +109,30 @@ namespace Geogebra3
             }            
         }
 
-
-
-        public void DrawCoordinateSystem(Graphics g)
+        private void drawYAxis(Graphics g, int dashLeftPoint, int dashRightPoint, int measurementTextPositionX)
         {
-            
-            int counter = 0;
+            int counter = 0;           
+                for (int i = y0; i < h; i += unitInterval)
+                {
+                    g.DrawLine(pen, new Point(dashLeftPoint, i), new Point(dashRightPoint, i));
+                    if (counter != 0)
+                        g.DrawString(counter.ToString(), fontMeasure, brush, measurementTextPositionX, i - 10);
+                    counter--;
+                }
+                counter = 0;
+                for (int i = y0; i > 0; i -= unitInterval)
+                {
+                    g.DrawLine(pen, new Point(dashLeftPoint, i), new Point(dashRightPoint, i));
+                    if (counter != 0)
+                        g.DrawString(counter.ToString(), fontMeasure, brush, measurementTextPositionX, i - 10);
+                    counter++;
+                }          
+        }
+        
+        public void DrawCoordinateSystem(Graphics g)
+        {  
             g.DrawLine(pen, new Point(0, y0), new Point(w, y0));
-            g.DrawLine(pen, new Point(x0, 0), new Point(x0, h));
-            
+            g.DrawLine(pen, new Point(x0, 0), new Point(x0, h));            
             // numbers of x Axis
             if (y0 > h)
             {
@@ -136,79 +144,30 @@ namespace Geogebra3
             }
             else
             {
-                drawXAxis(g, y0 - dashLength, y0 + dashLength, y0 + (dashLength + distanceDashMeasurementText));     
-                //for (int i = x0; i < w; i += unitInterval)
-                //{
-                //    g.DrawLine(pen, new Point(i, y0 - dashLength), new Point(i, y0 + dashLength));
-                //    if (counter != 0)
-                //        g.DrawString(counter.ToString(), fontMeasure, brush, i - 5, y0 + 3 * dashLength);
-                //    counter++;
-                //}
-                //counter = 0;
-                //for (int i = x0; i > 0; i -= unitInterval)
-                //{
-                //    g.DrawLine(pen, new Point(i, y0 - dashLength), new Point(i, y0 + dashLength));
-                //    g.DrawString(counter.ToString(), fontMeasure, brush, i - 10, y0 + 3 * dashLength);
-                //    counter--;
-                //}
-            }
-            
-            // numbers of y Axis 
-            counter = 0;
+                drawXAxis(g, y0 - dashLength, y0 + dashLength, y0 + (dashLength + distanceDashMeasurementText));  
+            }            
+            // numbers of y Axis           
             if (x0 < 0)
             {
-                for (int i = y0; i < h; i += unitInterval)
-                {
-                    g.DrawLine(pen, new Point(1 + dashLength, i), new Point(x0 + dashLength, i));
-                    if (counter != 0)
-                        g.DrawString(counter.ToString(), fontMeasure, brush, dashLength + 1, i - 10);
-                    counter--;
-                }
-                counter = 0;
-                for (int i = y0; i > 0; i -= unitInterval)
-                {
-                    g.DrawLine(pen, new Point(1 + dashLength, i), new Point(x0 + dashLength, i));
-                    if (counter != 0)
-                        g.DrawString(counter.ToString(), fontMeasure, brush, dashLength + 1, i - 10);
-                    counter++;
-                }
+                drawYAxis(g, 1 + dashLength, x0 + dashLength, dashLength + 1);              
             }
             else if (x0 > w)
             {
-                for (int i = y0; i < h; i += unitInterval)
-                {
-                    g.DrawLine(pen, new Point(w - dashLength - 1, i), new Point(x0 + dashLength, i));
-                    if (counter != 0)
-                        g.DrawString(counter.ToString(), fontMeasure, brush, w - dashLength - 22, i - 10);
-                    counter--;
-                }
-                counter = 0;
-                for (int i = y0; i > 0; i -= unitInterval)
-                {
-                    g.DrawLine(pen, new Point(w - dashLength - 1, i), new Point(x0 + dashLength, i));
-                    if (counter != 0)
-                        g.DrawString(counter.ToString(), fontMeasure, brush, w - dashLength - 22, i - 10);
-                    counter++;
-                }
+                drawYAxis(g, w - dashLength, w, w - dashLength - 22);             
             }
             else
             {
-                for (int i = y0; i < h; i += unitInterval)
-                {
-                    g.DrawLine(pen, new Point(x0 - dashLength, i), new Point(x0 + dashLength, i));
-                    if (counter != 0)
-                        g.DrawString(counter.ToString(), fontMeasure, brush, x0 + 3 * dashLength, i - 10);
-                    counter--;
-                }
-                counter = 0;
-                for (int i = y0; i > 0; i -= unitInterval)
-                {
-                    g.DrawLine(pen, new Point(x0 - dashLength, i), new Point(x0 + dashLength, i));
-                    if (counter != 0)
-                        g.DrawString(counter.ToString(), fontMeasure, brush, x0 + 3 * dashLength, i - 10);
-                    counter++;
-                }
+                drawYAxis(g, x0 - dashLength, x0 + dashLength, x0 + 3 * dashLength);                 
             }
         }
+
+
+
+
+
+
+
+
+
     }
 }

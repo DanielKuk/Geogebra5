@@ -36,8 +36,7 @@ namespace Geogebra3
        
 
         public Form1()
-        {
-            
+        {           
             InitializeComponent();
             this.pictureBox1.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseWheel);
             // create Coordinate System
@@ -46,7 +45,12 @@ namespace Geogebra3
             //int y0 = pictureBox1.Height / 2;
             int x0 = 100;
             int y0 = 200;
-            int w = pictureBox1.Width;
+
+
+            // 100 make the variable
+            pictureBox1.Width = this.Width - 100;
+            pictureBox1.Height = this.Height - 100;   
+            int w = pictureBox1.Width;           
             int h = pictureBox1.Height;           
             cs1 = new CoordinateSystem(unitInterval, x0, y0, w,h);           
             firstPoint = null;
@@ -60,6 +64,7 @@ namespace Geogebra3
 
         private void Form1_Load(object sender, EventArgs e)
         {
+           
             actions["AddPointButton"] = AddPointAction;
             actions["AddLineButton"] = AddLineAction;
             actions["RightTriangleButton"] = AddRightTriangeAction;
@@ -92,6 +97,7 @@ namespace Geogebra3
             {
                 figure.Draw(g, cs1);
             }
+            Text =  "form1.Width = " + this.Width + ";  pictureBox1.Width = " + pictureBox1.Width;
         }
 
         private void AddIntersectAction(object sender, MouseEventArgs e)
@@ -400,6 +406,7 @@ namespace Geogebra3
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
+            //Text = Text + " mouseX=" + e.X;
             if (actions.ContainsKey(actionKey))
             {
                 actions[actionKey](sender, e);
@@ -569,6 +576,13 @@ namespace Geogebra3
             }          
             actionKey = ((ToolStripItem)sender).Name;
             
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            // 100 make the variable
+            pictureBox1.Width = this.Width - 100;
+            pictureBox1.Height = this.Height - 100;  
         }
     }
 }
