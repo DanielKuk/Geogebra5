@@ -32,6 +32,8 @@ namespace Geogebra3
         Label selectedLabel;
         RealSegment selectedSeg1 = null;
         RealSegment selectedSeg2 = null;
+        int marginWidth;
+        int marginHeight;
         bool csMove = false;
        
 
@@ -41,17 +43,14 @@ namespace Geogebra3
             this.pictureBox1.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseWheel);
             // create Coordinate System
             int unitInterval = 50;
-            //int x0 = pictureBox1.Width / 2;
-            //int y0 = pictureBox1.Height / 2;
             int x0 = 100;
             int y0 = 200;
-
-
-            // 100 make the variable
-            pictureBox1.Width = this.Width - 100;
-            pictureBox1.Height = this.Height - 100;   
+            marginWidth = 25;
+            marginHeight = 70;
+            pictureBox1.Width = this.Width - marginWidth;
+            pictureBox1.Height = this.Height - marginHeight;   
             int w = pictureBox1.Width;           
-            int h = pictureBox1.Height;           
+            int h = pictureBox1.Height;            
             cs1 = new CoordinateSystem(unitInterval, x0, y0, w,h);           
             firstPoint = null;
             secondPoint = null;        
@@ -97,7 +96,7 @@ namespace Geogebra3
             {
                 figure.Draw(g, cs1);
             }
-            Text =  "form1.Width = " + this.Width + ";  pictureBox1.Width = " + pictureBox1.Width;
+            Text = cs1.unitInterval + "";
         }
 
         private void AddIntersectAction(object sender, MouseEventArgs e)
@@ -580,9 +579,9 @@ namespace Geogebra3
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            // 100 make the variable
-            pictureBox1.Width = this.Width - 100;
-            pictureBox1.Height = this.Height - 100;  
+            pictureBox1.Width = this.Width - marginWidth;
+            pictureBox1.Height = this.Height - marginHeight;
+            pictureBox1.Invalidate();
         }
     }
 }

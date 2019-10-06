@@ -23,18 +23,18 @@ namespace Geogebra3
         public int w;
         public int h;
         public int radiusPoint;
-     
+
 
 
         public CoordinateSystem(int unitInterval, int x0, int y0, int w, int h)
         {
-            brush = new SolidBrush(Color.Black);           
+            brush = new SolidBrush(Color.Black);
             selectedBrush = new SolidBrush(Color.Red);
             pen = new Pen(brush, 2);
             selectedPen = new Pen(selectedBrush, 2);
             fontMeasure = new Font("Calibri", 11);
             //fontMeasure = new Font("Calibri", 24); 
-            fontLabel = new Font("Arial", 12, FontStyle.Bold);            
+            fontLabel = new Font("Arial", 12, FontStyle.Bold);
             dashLength = 7;
             distanceDashMeasurementText = 10; // distance between Dash and MeasurementText in pixels
             radiusPoint = 5;
@@ -47,7 +47,7 @@ namespace Geogebra3
 
         public int RealToVisualDistance(double distance) // from meters to pixels
         {
-            return (int)Math.Round((distance * unitInterval));
+            return (int)Math.Round(( distance * unitInterval));
         }
 
         public double VisualToRealDistance(double distance) // from pixels to meters
@@ -90,74 +90,78 @@ namespace Geogebra3
             return p > a && p < b || p < a && p > b;
         }
 
-        public void drawXAxis(Graphics g, int dashUpPoint, int dashDownPoint, int measurementTextPositionY)
+        public void drawXAxisDashes(Graphics g, int dashUpPoint, int dashDownPoint, int measurementTextPositionY, double interval)
         {
-            int counter = 0;            
-            for (int i = x0; i < w; i += unitInterval)
+            int counter = 0;
+            int intervalVisual = RealToVisualDistance(interval);
+            for (int i = x0; i < w; i += intervalVisual)
             {
                 g.DrawLine(pen, new Point(i, dashUpPoint), new Point(i, dashDownPoint)); // черточки внизу экрана                
                 if (counter != 0)
-                    g.DrawString(counter.ToString(), fontMeasure, brush, i - 5, measurementTextPositionY);
+                    g.DrawString((counter * interval).ToString(), fontMeasure, brush, i - 5, measurementTextPositionY);
                 counter++;
             }
             counter = 0;
-            for (int i = x0; i > 0; i -= unitInterval)
+            for (int i = x0; i > 0; i -= intervalVisual)
             {
                 g.DrawLine(pen, new Point(i, dashUpPoint), new Point(i, dashDownPoint));
-                g.DrawString(counter.ToString(), fontMeasure, brush, i - 5, measurementTextPositionY);              
+                g.DrawString((counter*interval).ToString(), fontMeasure, brush, i - 5, measurementTextPositionY);
                 counter--;
-            }            
+            }
         }
 
-        private void drawYAxis(Graphics g, int dashLeftPoint, int dashRightPoint, int measurementTextPositionX)
+        private void drawYAxisDashes(Graphics g, int dashLeftPoint, int dashRightPoint, int measurementTextPositionX, double interval)
         {
-            int counter = 0;           
-                for (int i = y0; i < h; i += unitInterval)
-                {
-                    g.DrawLine(pen, new Point(dashLeftPoint, i), new Point(dashRightPoint, i));
-                    if (counter != 0)
-                        g.DrawString(counter.ToString(), fontMeasure, brush, measurementTextPositionX, i - 10);
-                    counter--;
-                }
-                counter = 0;
-                for (int i = y0; i > 0; i -= unitInterval)
-                {
-                    g.DrawLine(pen, new Point(dashLeftPoint, i), new Point(dashRightPoint, i));
-                    if (counter != 0)
-                        g.DrawString(counter.ToString(), fontMeasure, brush, measurementTextPositionX, i - 10);
-                    counter++;
-                }          
+            int counter = 0;
+            int intervalVisual = RealToVisualDistance(interval);
+            for (int i = y0; i < h; i += intervalVisual)
+            {
+                g.DrawLine(pen, new Point(dashLeftPoint, i), new Point(dashRightPoint, i));
+                if (counter != 0)
+                    g.DrawString((counter * interval).ToString(), fontMeasure, brush, measurementTextPositionX, i - 10);
+                counter--;
+            }
+            counter = 0;
+            for (int i = y0; i > 0; i -= intervalVisual)
+            {
+                g.DrawLine(pen, new Point(dashLeftPoint, i), new Point(dashRightPoint, i));
+                if (counter != 0)
+                    g.DrawString((counter * interval).ToString(), fontMeasure, brush, measurementTextPositionX, i - 10);
+                counter++;
+            }
         }
-        
+
         public void DrawCoordinateSystem(Graphics g)
-        {  
+        {
+
+            double interval = 0.1;
             g.DrawLine(pen, new Point(0, y0), new Point(w, y0));
-            g.DrawLine(pen, new Point(x0, 0), new Point(x0, h));            
+            g.DrawLine(pen, new Point(x0, 0), new Point(x0, h));
             // numbers of x Axis
             if (y0 > h)
             {
-                drawXAxis(g, h - dashLength, h, h - fontMeasure.Height - (dashLength + distanceDashMeasurementText));
-            }        
+                drawXAxisDashes(g, h - dashLength, h, h - fontMeasure.Height - (dashLength + distanceDashMeasurementText), interval);
+            }
             else if (y0 < 0)
             {
-                drawXAxis(g, 0, dashLength, 0 + (dashLength + distanceDashMeasurementText));                
+                drawXAxisDashes(g, 0, dashLength, 0 + (dashLength + distanceDashMeasurementText), interval);
             }
             else
             {
-                drawXAxis(g, y0 - dashLength, y0 + dashLength, y0 + (dashLength + distanceDashMeasurementText));  
-            }            
+                drawXAxisDashes(g, y0 - dashLength, y0 + dashLength, y0 + (dashLength + distanceDashMeasurementText), interval);
+            }
             // numbers of y Axis           
             if (x0 < 0)
             {
-                drawYAxis(g, 1 + dashLength, x0 + dashLength, dashLength + 1);              
+                drawYAxisDashes(g, 1 + dashLength, x0 + dashLength, dashLength + 1, interval);
             }
             else if (x0 > w)
             {
-                drawYAxis(g, w - dashLength, w, w - dashLength - 22);             
+                drawYAxisDashes(g, w - dashLength, w, w - dashLength - 22, interval);
             }
             else
             {
-                drawYAxis(g, x0 - dashLength, x0 + dashLength, x0 + 3 * dashLength);                 
+                drawYAxisDashes(g, x0 - dashLength, x0 + dashLength, x0 + 3 * dashLength, interval);
             }
         }
 
