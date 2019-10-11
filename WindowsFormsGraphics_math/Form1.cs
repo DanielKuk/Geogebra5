@@ -42,7 +42,7 @@ namespace Geogebra3
             InitializeComponent();
             this.pictureBox1.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseWheel);
             // create Coordinate System
-            int unitInterval = 50;
+            int unitInterval = 2;
             int x0 = 100;
             int y0 = 200;
             marginWidth = 25;
@@ -95,8 +95,8 @@ namespace Geogebra3
             foreach (RealFigure figure in realFigureList)
             {
                 figure.Draw(g, cs1);
-            }
-            Text = cs1.unitInterval + "";
+            }            
+            Text = "unitInterval = " + cs1.unitInterval + ", dashInterval=" + cs1.dashInterval;
         }
 
         private void AddIntersectAction(object sender, MouseEventArgs e)
@@ -538,19 +538,47 @@ namespace Geogebra3
 
         private void pictureBox1_MouseWheel(object sender, MouseEventArgs e)
         {
-            if (cs1.unitInterval >= 26)
+            double[] units = { 10, 18, 26, 34, 66, 300, 906, 2000, 3000, 10000 };
+            double[] dashes = { 10, 5, 2, 1, 0.5, 0.1, 0.05, 0.02, 0.01, 0.005};
+
+            // Дано: unitInterval. Найти: dashInterval
+            // unit = ? , dash = 200
+            // unit = ? , dash = 100
+            // unit = ? , dash = 50
+            // unit = ? , dash = 20
+            // unit = 10, dash = 10
+            // unit = 18, dash = 5
+            // unit = 26, dash = 2
+            // unit = 34, dash = 1
+            // unit = 66, dash = 0.5
+            // unit = 300, dash = 0.1
+            // unit = 906, dash = 0.05
+
+            for (int i = 0; i < units.Length; i++)
+            {
+                if (cs1.unitInterval >= units[i])
+                {
+                    cs1.dashInterval = dashes[i];
+                }
+            }
+
+
+                //cs1.dashInterval = (30.0 / cs1.unitInterval);
+                //cs1.dashInterval = 100;
+            if (cs1.unitInterval >= 10)
             {
                 int powerScale = 15;
                 double oldX = cs1.VisualToRealX(e.X);
                 double oldY = cs1.VisualToRealY(e.Y);
-                cs1.unitInterval += e.Delta / powerScale;
+                cs1.unitInterval += e.Delta / powerScale;  // cs1.unitInterval +=  120 / 15
                 cs1.x0 -= cs1.RealToVisualDistance(oldX - cs1.VisualToRealX(e.X));
                 cs1.y0 += cs1.RealToVisualDistance(oldY - cs1.VisualToRealY(e.Y));
                 pictureBox1.Invalidate();
             }
             else
             {
-                cs1.unitInterval = 26;
+                cs1.unitInterval = 10;
+                cs1.dashInterval = 20;
             }
         }
 

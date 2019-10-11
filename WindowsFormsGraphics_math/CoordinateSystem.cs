@@ -23,6 +23,7 @@ namespace Geogebra3
         public int w;
         public int h;
         public int radiusPoint;
+        public double dashInterval;
 
 
 
@@ -43,6 +44,7 @@ namespace Geogebra3
             this.w = w;
             this.h = h;
             this.unitInterval = unitInterval;
+            dashInterval = 200;
         }
 
         public int RealToVisualDistance(double distance) // from meters to pixels
@@ -134,34 +136,34 @@ namespace Geogebra3
         public void DrawCoordinateSystem(Graphics g)
         {
 
-            double interval = 0.1;
+        
             g.DrawLine(pen, new Point(0, y0), new Point(w, y0));
             g.DrawLine(pen, new Point(x0, 0), new Point(x0, h));
             // numbers of x Axis
             if (y0 > h)
             {
-                drawXAxisDashes(g, h - dashLength, h, h - fontMeasure.Height - (dashLength + distanceDashMeasurementText), interval);
+                drawXAxisDashes(g, h - dashLength, h, h - fontMeasure.Height - (dashLength + distanceDashMeasurementText), dashInterval);
             }
             else if (y0 < 0)
             {
-                drawXAxisDashes(g, 0, dashLength, 0 + (dashLength + distanceDashMeasurementText), interval);
+                drawXAxisDashes(g, 0, dashLength, 0 + (dashLength + distanceDashMeasurementText), dashInterval);
             }
             else
             {
-                drawXAxisDashes(g, y0 - dashLength, y0 + dashLength, y0 + (dashLength + distanceDashMeasurementText), interval);
+                drawXAxisDashes(g, y0 - dashLength, y0 + dashLength, y0 + (dashLength + distanceDashMeasurementText), dashInterval);
             }
             // numbers of y Axis           
             if (x0 < 0)
             {
-                drawYAxisDashes(g, 1 + dashLength, x0 + dashLength, dashLength + 1, interval);
+                drawYAxisDashes(g, 1 + dashLength, x0 + dashLength, dashLength + 1, dashInterval);
             }
             else if (x0 > w)
             {
-                drawYAxisDashes(g, w - dashLength, w, w - dashLength - 22, interval);
+                drawYAxisDashes(g, w - dashLength, w, w - dashLength - 22, dashInterval);
             }
             else
             {
-                drawYAxisDashes(g, x0 - dashLength, x0 + dashLength, x0 + 3 * dashLength, interval);
+                drawYAxisDashes(g, x0 - dashLength, x0 + dashLength, x0 + 3 * dashLength, dashInterval);
             }
         }
 
