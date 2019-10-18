@@ -44,6 +44,7 @@
             this.MoveButton = new System.Windows.Forms.ToolStripButton();
             this.DeleteButton = new System.Windows.Forms.ToolStripButton();
             this.RoundingButton = new System.Windows.Forms.ToolStripButton();
+            this.MiddlePointButton = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -87,7 +88,8 @@
             this.AddTriangleButton,
             this.AddPolygonButton,
             this.toolStripSeparator1,
-            this.IntersectButton});
+            this.IntersectButton,
+            this.MiddlePointButton});
             this.AddMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.AddMenu.Name = "AddMenu";
             this.AddMenu.Size = new System.Drawing.Size(114, 29);
@@ -201,6 +203,13 @@
             this.RoundingButton.Size = new System.Drawing.Size(93, 29);
             this.RoundingButton.Text = "Rounding";
             // 
+            // MiddlePointButton
+            // 
+            this.MiddlePointButton.Name = "MiddlePointButton";
+            this.MiddlePointButton.Size = new System.Drawing.Size(199, 30);
+            this.MiddlePointButton.Text = "Middle Point";
+            this.MiddlePointButton.Click += new System.EventHandler(this.CheckEngine);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -238,6 +247,7 @@
         private System.Windows.Forms.ToolStripMenuItem AddPolygonButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem IntersectButton;
+        private System.Windows.Forms.ToolStripMenuItem MiddlePointButton;
     }
 }
 

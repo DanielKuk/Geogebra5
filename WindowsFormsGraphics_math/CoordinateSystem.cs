@@ -14,7 +14,7 @@ namespace Geogebra3
         public Pen pen;
         public Pen selectedPen;
 
-        public int unitInterval; // in pixels   
+        public double unitInterval; // in pixels   
         public int dashLength;
         int distanceDashMeasurementText;
         public Font fontMeasure;
@@ -25,9 +25,28 @@ namespace Geogebra3
         public int radiusPoint;
         public double dashInterval;
 
+        public double powerScale = 1.1; // from 1.001 to 2
+        public double[,] matrix = 
+            {
+                {0.001,10000},
+                {0.05,500},
+                {0.5, 200},
+                {5, 20},
+                {10,10},
+                {20,5},
+                {26, 2},
+                {34, 1},
+                {66, 0.5},
+                {300, 0.1},
+                {906, 0.05},
+                {2000, 0.02},
+                {3000, 0.01},
+                {10000, 0.005}
+            };
 
 
-        public CoordinateSystem(int unitInterval, int x0, int y0, int w, int h)
+
+        public CoordinateSystem(double unitInterval, int x0, int y0, int w, int h)
         {
             brush = new SolidBrush(Color.Black);
             selectedBrush = new SolidBrush(Color.Red);
@@ -44,7 +63,8 @@ namespace Geogebra3
             this.w = w;
             this.h = h;
             this.unitInterval = unitInterval;
-            dashInterval = 200;
+            dashInterval = 20;  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            
         }
 
         public int RealToVisualDistance(double distance) // from meters to pixels
